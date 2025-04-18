@@ -18,16 +18,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, onConnect }) => {
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <Avatar className="h-16 w-16">
-            <AvatarImage src={profile.avatar} alt={profile.name} />
-            <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={profile?.avatar} alt={profile?.name || 'User'} />
+            <AvatarFallback>{profile?.name?.charAt(0) || '?'}</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
-            <h3 className="font-semibold text-lg">{profile.name}</h3>
-            <p className="text-sm text-muted-foreground">{profile.title}</p>
+            <h3 className="font-semibold text-lg">{profile?.name || 'Unknown User'}</h3>
+            <p className="text-sm text-muted-foreground">{profile?.title || 'No Title'}</p>
             <div className="flex items-center text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mr-1" />
-              <span>{profile.location}</span>
-              {profile.isRemote && (
+              <span>{profile?.location || 'Unknown Location'}</span>
+              {profile?.isRemote && (
                 <Badge variant="outline" className="ml-2 location-badge">
                   Remote
                 </Badge>
@@ -37,29 +37,37 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, onConnect }) => {
         </div>
         
         <div className="mt-4">
-          <p className="text-sm text-gray-600 line-clamp-2">{profile.bio}</p>
+          <p className="text-sm text-gray-600 line-clamp-2">{profile?.bio || 'No bio available'}</p>
         </div>
         
         <div className="mt-4">
           <h4 className="text-sm font-medium mb-2">Skills</h4>
           <div className="flex flex-wrap gap-2">
-            {profile.skills.map((skill) => (
-              <Badge key={skill.id} variant="outline" className="skill-badge">
-                {skill.name}
-              </Badge>
-            ))}
+            {profile?.skills && profile.skills.length > 0 ? (
+              profile.skills.map((skill) => (
+                <Badge key={skill?.id || Math.random().toString()} variant="outline" className="skill-badge">
+                  {skill?.name || 'Unnamed Skill'}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-sm text-gray-500">No skills listed</span>
+            )}
           </div>
         </div>
         
         <div className="mt-4">
           <h4 className="text-sm font-medium mb-2">Interested in</h4>
           <div className="flex flex-wrap gap-2">
-            {profile.hackathonsInterested.map((hackathon) => (
-              <Badge key={hackathon.id} variant="outline" className="hackathon-badge">
-                <Calendar className="h-3 w-3 mr-1" />
-                {hackathon.name}
-              </Badge>
-            ))}
+            {profile?.hackathonsInterested && profile.hackathonsInterested.length > 0 ? (
+              profile.hackathonsInterested.map((hackathon) => (
+                <Badge key={hackathon?.id || Math.random().toString()} variant="outline" className="hackathon-badge">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  {hackathon?.name || 'Unnamed Hackathon'}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-sm text-gray-500">No hackathons listed</span>
+            )}
           </div>
         </div>
       </CardContent>
